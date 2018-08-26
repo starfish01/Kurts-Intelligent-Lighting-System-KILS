@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "548253281684",
+    "firebase_url": "https://killssystem.firebaseio.com",
+    "project_id": "killssystem",
+    "storage_bucket": "killssystem.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:548253281684:android:1eff21225337f566",
+        "android_client_info": {
+          "package_name": "au.com.patricklabes.killssystem"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "548253281684-3hnkjjmsq2mgr71jr9fmgnq5gqurd2l7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyChQwNgm-pAoFacXqiio3wJyyRmnYHWf_E"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
