@@ -26,7 +26,6 @@ class MainActivity : AppCompatActivity() {
 
     var user = User()
 
-    var color = user.lightCurrentColour;
 
     val listOfLights = ArrayList<User>()
 
@@ -86,7 +85,7 @@ class MainActivity : AppCompatActivity() {
             setPresetColour(3)
         }
 
-        colour_select_button.setOnClickListener { launchColourSelector() }
+        //colour_select_button.setOnClickListener { launchColourSelector() }
 
     }
 
@@ -129,23 +128,23 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setPresetColour(i: Int) {
-
-        when(i){
-            1 ->  {
-                user.presetOne = color
-                lightmain_button_preset_1.setBackgroundColor(user.presetOne)}
-            2 ->  {
-                user.presetTwo = color
-                lightmain_button_preset_2.setBackgroundColor(user.presetTwo)}
-            3 ->  {
-                user.presetThree = color
-                lightmain_button_preset_3.setBackgroundColor(user.presetThree)}
-            4->{
-                lightmain_button_preset_1.setBackgroundColor(user.presetOne)
-                lightmain_button_preset_2.setBackgroundColor(user.presetTwo)
-                lightmain_button_preset_3.setBackgroundColor(user.presetThree)
-            }
-        }
+//
+//        when(i){
+//            1 ->  {
+//                user.presetOne = color
+//                lightmain_button_preset_1.setBackgroundColor(user.presetOne)}
+//            2 ->  {
+//                user.presetTwo = color
+//                lightmain_button_preset_2.setBackgroundColor(user.presetTwo)}
+//            3 ->  {
+//                user.presetThree = color
+//                lightmain_button_preset_3.setBackgroundColor(user.presetThree)}
+//            4->{
+//                lightmain_button_preset_1.setBackgroundColor(user.presetOne)
+//                lightmain_button_preset_2.setBackgroundColor(user.presetTwo)
+//                lightmain_button_preset_3.setBackgroundColor(user.presetThree)
+//            }
+//        }
 
         if(i != 4){
             updateDB()
@@ -182,25 +181,25 @@ class MainActivity : AppCompatActivity() {
 
 
 
-    private fun  launchColourSelector()  {
-
-        val dialog = AmbilWarnaDialog(this, color, false, object : AmbilWarnaDialog.OnAmbilWarnaListener {
-            override fun onOk(dialog: AmbilWarnaDialog, color: Int) {
-
-                this@MainActivity.color = color
-
-                lightmain_togglebutton_on_off.setBackgroundColor(color)
-
-                user.lightCurrentColour = color
-
-            }
-
-            override fun onCancel(dialog: AmbilWarnaDialog) {
-                Toast.makeText(applicationContext, "cancel", Toast.LENGTH_SHORT).show()
-            }
-        })
-        dialog.show()
-    }
+//    private fun  launchColourSelector()  {
+//
+//        val dialog = AmbilWarnaDialog(this, color, false, object : AmbilWarnaDialog.OnAmbilWarnaListener {
+//            override fun onOk(dialog: AmbilWarnaDialog, color: Int) {
+//
+////                this@MainActivity.color = color
+////
+////                lightmain_togglebutton_on_off.setBackgroundColor(color)
+////
+////                user.lightCurrentColour = color
+//
+//            }
+//
+//            override fun onCancel(dialog: AmbilWarnaDialog) {
+//                Toast.makeText(applicationContext, "cancel", Toast.LENGTH_SHORT).show()
+//            }
+//        })
+//        dialog.show()
+//    }
 
 
 

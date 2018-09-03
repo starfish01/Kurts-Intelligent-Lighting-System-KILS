@@ -84,7 +84,7 @@ class RegistrationActivity : AppCompatActivity() {
 
         val ref = FirebaseDatabase.getInstance().getReference("/users/$uid")
 
-        val user = User(uid, username_edittext_reg_screen.text.toString(),false,16777215,16777215,16777215,16777215)
+        val user = User(uid, username_edittext_reg_screen.text.toString(), mutableListOf<String>())
 
         ref.setValue(user)
                 .addOnSuccessListener {
