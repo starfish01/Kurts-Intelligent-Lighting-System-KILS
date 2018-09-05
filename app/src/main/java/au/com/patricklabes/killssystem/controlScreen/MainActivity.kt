@@ -56,6 +56,7 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
                 finish()
             }
+
         }
         return false
     }
@@ -87,6 +88,12 @@ class MainActivity : AppCompatActivity() {
 
         //colour_select_button.setOnClickListener { launchColourSelector() }
 
+        add_light_button.setOnClickListener {
+            val intent = Intent(this, AddLightActivity::class.java)
+            startActivity(intent)
+        }
+
+
     }
 
 
@@ -99,6 +106,7 @@ class MainActivity : AppCompatActivity() {
 
         val uid : String  = FirebaseAuth.getInstance().uid.toString()
 
+        //this looks wrong
         val ref = FirebaseDatabase.getInstance().getReference("/users")
 
         ref.addListenerForSingleValueEvent(object: ValueEventListener {
