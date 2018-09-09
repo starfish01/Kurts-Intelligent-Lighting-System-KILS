@@ -31,9 +31,56 @@ class AddLightActivity : AppCompatActivity() {
 
         val newLight = Light()
 
+
+
+        //val uid: String, -- take user uid+time stamp (to make this
+        // easier im going to make this a field for now)
+        newLight.uid = id_textfield_addbuttonactivity.text.toString()
+
+        //find if this light exists
+
+
+
+        // val lightNickName: String, -- grabbed from ui
+        newLight.lightNickName = nickname_textfield_addbuttonacvtivity.text.toString()
+
+        // val switchState: Boolean,-- set to false
+        newLight.switchState = false
+
+        // var lightCurrentColour: Int, -- set to white
+        newLight.lightCurrentColour = 16777215
+
+        // var presetOne: Int, set to white
+        newLight.presetOne = 16777215
+        // var presetTwo: Int, set to white
+        newLight.presetTwo = 16777215
+        // var presetThree: Int, set to white
+        newLight.presetThree
+        // var userConnectedWithLight: List<String> --if it cant find list add this device
+
+
     }
 
-    //var usersLights: MutableList<Light> = mutableListOf()
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//var usersLights: MutableList<Light> = mutableListOf()
 
 
 
@@ -66,5 +113,4 @@ class AddLightActivity : AppCompatActivity() {
 
 
 
-   // }
-}
+// }
