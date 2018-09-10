@@ -163,8 +163,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateDB() {
 
-
-
         val uid = FirebaseAuth.getInstance().uid ?: ""
 
         val ref = FirebaseDatabase.getInstance().getReference("/users/$uid")
