@@ -94,7 +94,23 @@ class AddLightActivity : AppCompatActivity() {
 
 
     private fun addLightToUser(){
-       
+        val uid = FirebaseAuth.getInstance().uid
+
+        val ref = FirebaseDatabase.getInstance().getReference("/users/${uid}/lights/${newLight.uid}")
+
+        ref.addListenerForSingleValueEvent(object : ValueEventListener{
+
+            override fun onDataChange(p0: DataSnapshot) {
+                ref.setValue(newLight.uid)
+                Log.d(Tag,"Saved light against user")
+            }
+
+            override fun onCancelled(p0: DatabaseError) {
+                Log.d(Tag,"Failed to save light against user: ${p0.message}")
+            }
+
+        })
+
     }
 
 }
