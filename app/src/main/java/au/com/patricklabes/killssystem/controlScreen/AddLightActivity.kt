@@ -31,11 +31,9 @@ class AddLightActivity : AppCompatActivity() {
 
     val Tag = "AddLightActivity"
 
-
+    val newLight = Light()
 
     private fun AddALight(){
-
-        val newLight = Light()
 
         //for the time being im going to make it one user one light
 
@@ -59,7 +57,7 @@ class AddLightActivity : AppCompatActivity() {
         // var userConnectedWithLight: List<String> --if it cant find list add this device
 
 
-        val uid = FirebaseAuth.getInstance().uid ?: ""
+        //val uid = FirebaseAuth.getInstance().uid ?: ""
 
         val ref = FirebaseDatabase.getInstance().getReference("/lights/${newLight.uid}")
 
@@ -76,6 +74,9 @@ class AddLightActivity : AppCompatActivity() {
                     ref.setValue(newLight)
                             .addOnSuccessListener {
                         Log.d(Tag,"A new light has been saved to the db")
+
+                                addLightToUser()
+
                             }
                             .addOnFailureListener {
                               Log.d(Tag, "Not Saved to db ${it.message}")
@@ -89,6 +90,11 @@ class AddLightActivity : AppCompatActivity() {
 
 
 
+    }
+
+
+    private fun addLightToUser(){
+       
     }
 
 }

@@ -6,6 +6,10 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import android.widget.Toast
 import au.com.patricklabes.killssystem.R
 import au.com.patricklabes.killssystem.loginscreens.LoginActivity
@@ -16,6 +20,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.preference_dropdown.*
 import yuku.ambilwarna.AmbilWarnaDialog
 
 
@@ -23,13 +28,13 @@ import yuku.ambilwarna.AmbilWarnaDialog
 
 class MainActivity : AppCompatActivity() {
 
-
     var user = User()
-
 
     val listOfLights = ArrayList<User>()
 
+    var languages = arrayOf("English", "French", "Spanish", "Hindi", "Russian", "Telugu", "Chinese", "German", "Portuguese", "Arabic", "Dutch", "Urdu", "Italian", "Tamil", "Persian", "Turkish", "Other")
 
+    var spinner:Spinner?=null
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
@@ -75,6 +80,14 @@ class MainActivity : AppCompatActivity() {
             grabUserData();
         }
 
+        //populate spinner
+        populateArray()
+
+
+        // lightmain_spinner_lightselect.onItemSelectedListener(this)
+
+        //enable eveything onces a light has been choosen from spinner
+
 
         lightmain_button_preset_1.setOnClickListener {
             setPresetColour(1)
@@ -92,6 +105,31 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, AddLightActivity::class.java)
             startActivity(intent)
         }
+
+
+    }
+
+    private fun populateArray(){
+
+
+
+
+        val myStrings = arrayOf("One", "Two", "Three", "Four", "Five")
+
+        //Adapter for spinner
+        lightmain_spinner_lightselect.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, myStrings)
+
+        //item selected listener for spinner
+        lightmain_spinner_lightselect.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                Toast.makeText(this@MainActivity, myStrings[p2], Toast.LENGTH_LONG).show()
+            }
+        }
+
 
 
     }
@@ -209,5 +247,8 @@ class MainActivity : AppCompatActivity() {
 
 
 
+
 }
+
+
 
