@@ -13,6 +13,7 @@ import android.widget.Spinner
 import android.widget.Toast
 import au.com.patricklabes.killssystem.R
 import au.com.patricklabes.killssystem.loginscreens.LoginActivity
+import au.com.patricklabes.killssystem.models.Light
 import au.com.patricklabes.killssystem.models.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -22,6 +23,8 @@ import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.preference_dropdown.*
 import yuku.ambilwarna.AmbilWarnaDialog
+import java.util.*
+import com.google.firebase.database.GenericTypeIndicator
 
 
 
@@ -31,8 +34,6 @@ class MainActivity : AppCompatActivity() {
     var user = User()
 
     val listOfLights = ArrayList<User>()
-
-    var languages = arrayOf("English", "French", "Spanish", "Hindi", "Russian", "Telugu", "Chinese", "German", "Portuguese", "Arabic", "Dutch", "Urdu", "Italian", "Tamil", "Persian", "Turkish", "Other")
 
     var spinner:Spinner?=null
 
@@ -67,10 +68,11 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    val TAG = "LIGHTSDASHBOARD"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
 
         val userLoginStatus = FirebaseAuth.getInstance().currentUser;
 
@@ -80,8 +82,12 @@ class MainActivity : AppCompatActivity() {
             grabUserData();
         }
 
+
+
         //populate spinner
         populateArray()
+
+        getListOfLights();
 
 
         // lightmain_spinner_lightselect.onItemSelectedListener(this)
@@ -111,9 +117,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun populateArray(){
 
-
-
-
         val myStrings = arrayOf("One", "Two", "Three", "Four", "Five")
 
         //Adapter for spinner
@@ -130,6 +133,33 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+
+
+    }
+
+    private fun getListOfLights(){
+
+        val ref = FirebaseDatabase.getInstance().getReference("lights/")
+
+        ref.addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onDataChange(p0: DataSnapshot) {
+
+               //val post = p0.getValue(Light::class.java)
+                val names = ArrayList<Light>()
+
+
+
+
+                Log.d(TAG,"this is it" +p0.child("1"))
+
+
+
+
+
+
+            }
+            override fun onCancelled(p0: DatabaseError) {            }
+        })
 
 
     }
@@ -151,7 +181,6 @@ class MainActivity : AppCompatActivity() {
 
             override fun onDataChange(p0: DataSnapshot) {
 
-
                 p0.children.mapNotNullTo(mike){
                     it.getValue<User>(User::class.java)
                 }
@@ -161,6 +190,8 @@ class MainActivity : AppCompatActivity() {
                 user = listOfLights.get(0)
 
                 setPresetColour(4)
+
+                Log.d(TAG,user.toString());
 
             }
 
