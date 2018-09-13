@@ -28,8 +28,9 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
-    var user = User()
-
+    companion object {
+        var currentUser: User? = null
+    }
     val listOfLights = ArrayList<User>()
 
     var spinner:Spinner?=null
@@ -80,7 +81,7 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        getListOfLights();
+        //getListOfLights();
 
         //populate spinner
         populateArray()
@@ -138,7 +139,7 @@ class MainActivity : AppCompatActivity() {
 
         Log.d(TAG, "just before1 the light print")
 
-        val ref = FirebaseDatabase.getInstance().getReference("/users/${user.uid}/lights")
+        val ref = FirebaseDatabase.getInstance().getReference("/users/${currentUser!!.uid}/lights")
 
         ref.addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onDataChange(p0: DataSnapshot) {
@@ -163,42 +164,21 @@ class MainActivity : AppCompatActivity() {
 
     private fun grabUserData(){
 
-        Log.d(TAG,"help...")
+        val uid = FirebaseAuth.getInstance().uid
 
-        var mike: List<String> = mutableListOf()
+        Log.d(TAG,"user uid $uid")
 
-        val u1 = User();
-
-        val uid : String  = FirebaseAuth.getInstance().uid.toString()
-
-        //this looks wrong
-        val ref = FirebaseDatabase.getInstance().getReference("/users/${uid}")
-
-        ref.addListenerForSingleValueEvent(object: ValueEventListener {
-
+        val ref = FirebaseDatabase.getInstance().getReference("/users/$uid")
+        ref.addListenerForSingleValueEvent(object: ValueEventListener{
             override fun onDataChange(p0: DataSnapshot) {
-
-                p0.getValue(User::class.java)
-
-
-
-                mike = user.listOfLightsConnectedToUser
-
-                Log.d(TAG, "In user creation ${mike.size}")
-
-                user = listOfLights.get(0)
-
-                setPresetColour(4)
-
-                Log.d(TAG, "hello world" + user.toString());
-
+                var chatPartnerUser = p0.getValue(User::class.java)
+                Log.d(TAG,"current user ${currentUser}")
             }
 
             override fun onCancelled(p0: DatabaseError) {
 
             }
-        }
-        )
+        })
 
 
     }
@@ -235,11 +215,11 @@ class MainActivity : AppCompatActivity() {
 
         val ref = FirebaseDatabase.getInstance().getReference("/users/$uid")
 
-        ref.setValue(user)
+        ref.setValue(currentUser)
                 .addOnSuccessListener {
                     Log.d("mainactivitymessage","we have saved to the db")
 
-                    Log.d("mainactivitymessage","${user.uid}, ${user.username}")
+                    Log.d("mainactivitymessage","${currentUser!!.uid}, ${currentUser!!.username}")
 
                     Log.d("mainactivitymessage",FirebaseDatabase.getInstance().getReference("/users/$uid").toString())
 
