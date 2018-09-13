@@ -139,18 +139,21 @@ class MainActivity : AppCompatActivity() {
 
     private fun getListOfLights(){
 
+        val listOfLightsMap = listOf<Light>()
+        var listOfLights: MutableList<Light> = mutableListOf<Light>()
+
         val ref = FirebaseDatabase.getInstance().getReference("lights/")
 
         ref.addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onDataChange(p0: DataSnapshot) {
 
-               //val post = p0.getValue(Light::class.java)
-                val names = ArrayList<Light>()
+                val chatMessage = p0.getValue(Light::class.java) ?: return
 
+                listOfLights.add(chatMessage)
 
+                Log.d(TAG,listOfLights.size.toString())
 
-
-                Log.d(TAG,"this is it" +p0.child("1"))
+              // var size = listOfLightsMap.entries.toString()
 
 
 
