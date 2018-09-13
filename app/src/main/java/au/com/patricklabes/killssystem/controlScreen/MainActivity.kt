@@ -21,10 +21,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.preference_dropdown.*
-import yuku.ambilwarna.AmbilWarnaDialog
 import java.util.*
-import com.google.firebase.database.GenericTypeIndicator
 
 
 
@@ -83,11 +80,10 @@ class MainActivity : AppCompatActivity() {
         }
 
 
+        getListOfLights();
 
         //populate spinner
         populateArray()
-
-        getListOfLights();
 
 
         // lightmain_spinner_lightselect.onItemSelectedListener(this)
@@ -133,16 +129,16 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-
-
     }
 
     private fun getListOfLights(){
 
-        val listOfLightsMap = listOf<Light>()
-        var listOfLights: MutableList<Light> = mutableListOf<Light>()
+        Log.d(TAG, "just before2 the light print")
+        val listOfLights: MutableList<Light> = mutableListOf<Light>()
 
-        val ref = FirebaseDatabase.getInstance().getReference("lights/")
+        Log.d(TAG, "just before1 the light print")
+
+        val ref = FirebaseDatabase.getInstance().getReference("/users/${user.uid}/lights")
 
         ref.addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onDataChange(p0: DataSnapshot) {
@@ -151,17 +147,14 @@ class MainActivity : AppCompatActivity() {
 
                 listOfLights.add(chatMessage)
 
-                Log.d(TAG,listOfLights.size.toString())
 
+                Log.d(TAG, "just before the light print")
+                Log.d(TAG, listOfLights.size.toString())
               // var size = listOfLightsMap.entries.toString()
 
 
-
-
-
-
             }
-            override fun onCancelled(p0: DatabaseError) {            }
+            override fun onCancelled(p0: DatabaseError) {      Log.d(TAG, "lights were cancelledp1@gmail")      }
         })
 
 
@@ -170,31 +163,34 @@ class MainActivity : AppCompatActivity() {
 
     private fun grabUserData(){
 
+        Log.d(TAG,"help...")
 
-        val mike: MutableList<User> = mutableListOf()
+        var mike: List<String> = mutableListOf()
 
         val u1 = User();
 
         val uid : String  = FirebaseAuth.getInstance().uid.toString()
 
         //this looks wrong
-        val ref = FirebaseDatabase.getInstance().getReference("/users")
+        val ref = FirebaseDatabase.getInstance().getReference("/users/${uid}")
 
         ref.addListenerForSingleValueEvent(object: ValueEventListener {
 
             override fun onDataChange(p0: DataSnapshot) {
 
-                p0.children.mapNotNullTo(mike){
-                    it.getValue<User>(User::class.java)
-                }
+                p0.getValue(User::class.java)
 
-                listOfLights.add(mike.get(0))
+
+
+                mike = user.listOfLightsConnectedToUser
+
+                Log.d(TAG, "In user creation ${mike.size}")
 
                 user = listOfLights.get(0)
 
                 setPresetColour(4)
 
-                Log.d(TAG,user.toString());
+                Log.d(TAG, "hello world" + user.toString());
 
             }
 
