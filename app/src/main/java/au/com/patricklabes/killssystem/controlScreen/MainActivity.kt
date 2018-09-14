@@ -171,7 +171,10 @@ class MainActivity : AppCompatActivity() {
         val ref = FirebaseDatabase.getInstance().getReference("/users/$uid")
         ref.addListenerForSingleValueEvent(object: ValueEventListener{
             override fun onDataChange(p0: DataSnapshot) {
-                var chatPartnerUser = p0.getValue(User::class.java)
+                currentUser = p0.getValue(User::class.java)
+
+
+
                 Log.d(TAG,"current user ${currentUser}")
             }
 
