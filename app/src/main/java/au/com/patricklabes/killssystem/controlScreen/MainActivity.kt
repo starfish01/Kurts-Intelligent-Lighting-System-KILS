@@ -10,7 +10,6 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
-import android.widget.Toast
 import au.com.patricklabes.killssystem.R
 import au.com.patricklabes.killssystem.loginscreens.LoginActivity
 import au.com.patricklabes.killssystem.models.Light
@@ -77,29 +76,10 @@ class MainActivity : AppCompatActivity() {
             grabUserData();
         }
 
-
-        //getListOfLights();
-
-
-
         //populate spinner
-        populateArray()
-
-
-        // lightmain_spinner_lightselect.onItemSelectedListener(this)
+        //populateArray()
 
         //enable eveything onces a light has been choosen from spinner
-
-
-        lightmain_button_preset_1.setOnClickListener {
-            setPresetColour(1)
-        }
-        lightmain_button_preset_2.setOnClickListener {
-            setPresetColour(2)
-        }
-        lightmain_button_preset_3.setOnClickListener {
-            setPresetColour(3)
-        }
 
         //colour_select_button.setOnClickListener { launchColourSelector() }
 
@@ -108,24 +88,33 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-
     }
 
     private fun populateArray(){
 
         val myStrings = arrayOf("One", "Two", "Three", "Four", "Five")
 
-        //Adapter for spinner
-        lightmain_spinner_lightselect.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, myStrings)
+        Log.d(TAG, "adding to spinner")
 
+
+        
+        ///////////////////////////////////////////////////////lunch time work///////////////////////////////////////
+        //We are not adding the lights to the spinner correctly i think it has to do with the array and the spinner//
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+        //Adapter for spinner
+        lightmain_spinner_lightselect.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, listOfLights)
+
+        Log.d(TAG, "adding to spinner1")
         //item selected listener for spinner
         lightmain_spinner_lightselect.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(p0: AdapterView<*>?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                Log.d(TAG, "adding to spinner3")
             }
 
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                Toast.makeText(this@MainActivity, myStrings[p2], Toast.LENGTH_LONG).show()
+                Log.d(TAG, "adding to spinner2")
             }
         }
 
@@ -135,35 +124,28 @@ class MainActivity : AppCompatActivity() {
 
         val uid = FirebaseAuth.getInstance().uid
 
-        Log.d(TAG, "start of grabbing lights")
-
         val ref = FirebaseDatabase.getInstance().getReference("/users/$uid/lights")
         ref.addChildEventListener(object: ChildEventListener {
 
-
             override fun onChildAdded(p0: DataSnapshot, p1: String?) {
-                listOfLights.clear()
-                p0.children.mapNotNullTo(listOfLights){it.getValue<Light>(Light::class.java)}
+                grabeListOfLights(p0)
             }
 
             override fun onChildChanged(p0: DataSnapshot, p1: String?) {
-                listOfLights.clear()
-                p0.children.mapNotNullTo(listOfLights){it.getValue<Light>(Light::class.java)}
+                grabeListOfLights(p0)
             }
-
-            override fun onChildMoved(p0: DataSnapshot, p1: String?) {
-
-            }
-
-            override fun onChildRemoved(p0: DataSnapshot) {
-
-            }
-            override fun onCancelled(p0: DatabaseError) {
-
-            }
+            override fun onChildMoved(p0: DataSnapshot, p1: String?) {}
+            override fun onChildRemoved(p0: DataSnapshot) { }
+            override fun onCancelled(p0: DatabaseError) { }
         })
 
+        populateArray()
 
+    }
+
+    private fun grabeListOfLights(p0: DataSnapshot){
+        listOfLights.clear()
+        p0.children.mapNotNullTo(listOfLights){it.getValue<Light>(Light::class.java)}
     }
 
 
