@@ -16,10 +16,7 @@ import au.com.patricklabes.killssystem.loginscreens.LoginActivity
 import au.com.patricklabes.killssystem.models.Light
 import au.com.patricklabes.killssystem.models.User
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
@@ -31,7 +28,7 @@ class MainActivity : AppCompatActivity() {
     companion object {
         var currentUser: User? = null
     }
-    val listOfLights = ArrayList<User>()
+    val listOfLights = ArrayList<Light>()
 
     var spinner:Spinner?=null
 
@@ -82,6 +79,8 @@ class MainActivity : AppCompatActivity() {
 
 
         //getListOfLights();
+
+
 
         //populate spinner
         populateArray()
@@ -134,28 +133,34 @@ class MainActivity : AppCompatActivity() {
 
     private fun getListOfLights(){
 
-        Log.d(TAG, "just before2 the light print")
-        val listOfLights: MutableList<Light> = mutableListOf<Light>()
+        val uid = FirebaseAuth.getInstance().uid
 
-        Log.d(TAG, "just before1 the light print")
+        Log.d(TAG, "start of grabbing lights")
 
-        val ref = FirebaseDatabase.getInstance().getReference("/users/${currentUser!!.uid}/lights")
-
-        ref.addListenerForSingleValueEvent(object : ValueEventListener{
-            override fun onDataChange(p0: DataSnapshot) {
-
-                val chatMessage = p0.getValue(Light::class.java) ?: return
-
-                listOfLights.add(chatMessage)
+        val ref = FirebaseDatabase.getInstance().getReference("/users/$uid/lights")
+        ref.addChildEventListener(object: ChildEventListener {
 
 
-                Log.d(TAG, "just before the light print")
-                Log.d(TAG, listOfLights.size.toString())
-              // var size = listOfLightsMap.entries.toString()
+            override fun onChildAdded(p0: DataSnapshot, p1: String?) {
+                listOfLights.clear()
+                p0.children.mapNotNullTo(listOfLights){it.getValue<Light>(Light::class.java)}
+            }
 
+            override fun onChildChanged(p0: DataSnapshot, p1: String?) {
+                listOfLights.clear()
+                p0.children.mapNotNullTo(listOfLights){it.getValue<Light>(Light::class.java)}
+            }
+
+            override fun onChildMoved(p0: DataSnapshot, p1: String?) {
 
             }
-            override fun onCancelled(p0: DatabaseError) {      Log.d(TAG, "lights were cancelledp1@gmail")      }
+
+            override fun onChildRemoved(p0: DataSnapshot) {
+
+            }
+            override fun onCancelled(p0: DatabaseError) {
+
+            }
         })
 
 
@@ -173,9 +178,10 @@ class MainActivity : AppCompatActivity() {
             override fun onDataChange(p0: DataSnapshot) {
                 currentUser = p0.getValue(User::class.java)
 
-
-
                 Log.d(TAG,"current user ${currentUser}")
+
+                getListOfLights()
+
             }
 
             override fun onCancelled(p0: DatabaseError) {
