@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
     companion object {
         var currentUser: User? = null
     }
-    val listOfLights = ArrayList<Light>()
+    val listOfLights = ArrayList<String>()
 
     var spinner:Spinner?=null
 
@@ -97,12 +97,13 @@ class MainActivity : AppCompatActivity() {
         Log.d(TAG, "adding to spinner")
 
 
-        
         ///////////////////////////////////////////////////////lunch time work///////////////////////////////////////
         //We are not adding the lights to the spinner correctly i think it has to do with the array and the spinner//
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+        Log.d(TAG, listOfLights.size.toString())
 
+        Log.d(TAG,listOfLights.toString())
         //Adapter for spinner
         lightmain_spinner_lightselect.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, listOfLights)
 
@@ -125,18 +126,14 @@ class MainActivity : AppCompatActivity() {
         val uid = FirebaseAuth.getInstance().uid
 
         val ref = FirebaseDatabase.getInstance().getReference("/users/$uid/lights")
-        ref.addChildEventListener(object: ChildEventListener {
-
-            override fun onChildAdded(p0: DataSnapshot, p1: String?) {
-                grabeListOfLights(p0)
+        ref.addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onDataChange(p0: DataSnapshot) {
+                p0.children.forEach { listOfLights.add(it.value.toString()) }
             }
 
-            override fun onChildChanged(p0: DataSnapshot, p1: String?) {
-                grabeListOfLights(p0)
+            override fun onCancelled(p0: DatabaseError) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
-            override fun onChildMoved(p0: DataSnapshot, p1: String?) {}
-            override fun onChildRemoved(p0: DataSnapshot) { }
-            override fun onCancelled(p0: DatabaseError) { }
         })
 
         populateArray()
@@ -144,9 +141,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun grabeListOfLights(p0: DataSnapshot){
-        listOfLights.clear()
-        p0.children.mapNotNullTo(listOfLights){it.getValue<Light>(Light::class.java)}
+
     }
+
 
 
     private fun grabUserData(){
