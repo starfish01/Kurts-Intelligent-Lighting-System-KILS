@@ -22,7 +22,7 @@ import java.util.*
 
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
     companion object {
         var currentUser: User? = null
@@ -70,23 +70,57 @@ class MainActivity : AppCompatActivity() {
 
         val userLoginStatus = FirebaseAuth.getInstance().currentUser;
 
+        disableButtons(true)
+
         if(userLoginStatus == null){
             finish()
         }else{
             grabUserData();
         }
 
-        //populate spinner
-        //populateArray()
+        lightmain_spinner_lightselect.setOnItemClickListener(this) = object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                disableButtons(true)
+                Log.d(TAG, "ITEM NOT SELECTED")
+            }
 
-        //enable eveything onces a light has been choosen from spinner
-
-        //colour_select_button.setOnClickListener { launchColourSelector() }
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                disableButtons(false)
+                Log.d(TAG,"ITEM SELECTED")
+            }
+        }
 
         add_light_button.setOnClickListener {
             val intent = Intent(this, AddLightActivity::class.java)
             startActivity(intent)
         }
+
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    private fun disableButtons(b: Boolean){
+        if(b){
+            colour_select_button.isEnabled = false
+            lightmain_button_preset_1.isEnabled = false
+            lightmain_button_preset_2.isEnabled = false
+            lightmain_button_preset_3.isEnabled = false
+            lightmain_togglebutton_on_off.isEnabled = false
+        }else
+        {
+            colour_select_button.isEnabled = true
+            lightmain_button_preset_1.isEnabled = true
+            lightmain_button_preset_2.isEnabled = true
+            lightmain_button_preset_3.isEnabled = true
+            lightmain_togglebutton_on_off.isEnabled = true
+        }
+
 
     }
 
@@ -247,6 +281,7 @@ class MainActivity : AppCompatActivity() {
 
 
 }
+
 
 
 
