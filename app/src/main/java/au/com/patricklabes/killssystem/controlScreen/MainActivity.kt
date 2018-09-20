@@ -1,6 +1,7 @@
 package au.com.patricklabes.killssystem.controlScreen
 
 import android.content.Intent
+import android.nfc.Tag
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
@@ -78,31 +79,19 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             grabUserData();
         }
 
-        lightmain_spinner_lightselect.setOnItemClickListener(this) = object : AdapterView.OnItemSelectedListener{
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                disableButtons(true)
-                Log.d(TAG, "ITEM NOT SELECTED")
-            }
+        spinner = this.lightmain_spinner_lightselect
 
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                disableButtons(false)
-                Log.d(TAG,"ITEM SELECTED")
-            }
-        }
+        spinner!!.setOnItemSelectedListener(this)
+
+        lightmain_spinner_lightselect.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, listOfLights)
+
+
 
         add_light_button.setOnClickListener {
             val intent = Intent(this, AddLightActivity::class.java)
             startActivity(intent)
         }
 
-    }
-
-    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun onNothingSelected(parent: AdapterView<*>?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     private fun disableButtons(b: Boolean){
@@ -124,34 +113,29 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
     }
 
-    private fun populateArray(){
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        Log.d(TAG,"ITEM SELECTED")
+    }
 
-        val myStrings = arrayOf("One", "Two", "Three", "Four", "Five")
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+        Log.d(TAG,"ITEM NOT SELECTED")
+    }
+
+    private fun populateArray(){
 
         Log.d(TAG, "adding to spinner")
 
-
-        ///////////////////////////////////////////////////////lunch time work///////////////////////////////////////
-        //We are not adding the lights to the spinner correctly i think it has to do with the array and the spinner//
-        /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-        Log.d(TAG, listOfLights.size.toString())
-
-        Log.d(TAG,listOfLights.toString())
-        //Adapter for spinner
         lightmain_spinner_lightselect.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, listOfLights)
 
-        Log.d(TAG, "adding to spinner1")
-        //item selected listener for spinner
-        lightmain_spinner_lightselect.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-                Log.d(TAG, "adding to spinner3")
-            }
-
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                Log.d(TAG, "adding to spinner2")
-            }
-        }
+//        lightmain_spinner_lightselect.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+//            override fun onNothingSelected(p0: AdapterView<*>?) {
+//                Log.d(TAG, "adding to spinner3")
+//            }
+//
+//            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+//                Log.d(TAG, "adding to spinner2")
+//            }
+//        }
 
     }
 
