@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     }
     val listOfLights = ArrayList<String>()
 
-    var spinner:Spinner?=null
+    lateinit var spinner:Spinner
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
@@ -79,14 +79,6 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             grabUserData();
         }
 
-        spinner = this.lightmain_spinner_lightselect
-
-        spinner!!.setOnItemSelectedListener(this)
-
-        lightmain_spinner_lightselect.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, listOfLights)
-
-
-
         add_light_button.setOnClickListener {
             val intent = Intent(this, AddLightActivity::class.java)
             startActivity(intent)
@@ -125,17 +117,20 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
         Log.d(TAG, "adding to spinner")
 
-        lightmain_spinner_lightselect.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, listOfLights)
+        spinner.setOnItemSelectedListener(this)
+        Log.d(TAG, "1")
 
-//        lightmain_spinner_lightselect.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-//            override fun onNothingSelected(p0: AdapterView<*>?) {
-//                Log.d(TAG, "adding to spinner3")
-//            }
-//
-//            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-//                Log.d(TAG, "adding to spinner2")
-//            }
-//        }
+        val aa = ArrayAdapter(this, android.R.layout.simple_spinner_item, listOfLights)
+        Log.d(TAG, "2")
+
+        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        Log.d(TAG, "3")
+
+        spinner.setAdapter(aa)
+        Log.d(TAG, "4")
+
+        //lightmain_spinner_lightselect.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, listOfLights)
+
 
     }
 
